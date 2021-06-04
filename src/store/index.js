@@ -8,12 +8,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sampleBlogCards: [
-      { blogTitle: "Blog Card #1", blogCoverPhoto: "stock-1", blogDate: "May 1, 2021", },
-      { blogTitle: "Blog Card #2", blogCoverPhoto: "stock-2", blogDate: "May 1, 2021", },
-      { blogTitle: "Blog Card #3", blogCoverPhoto: "stock-3", blogDate: "May 1, 2021", },
-      { blogTitle: "Blog Card #4", blogCoverPhoto: "stock-4", blogDate: "May 1, 2021", },
-    ],
+    // Blogs loaded
+    blogPosts: [],
+    postLoaded: null,
+
     // User
     editPost: null,
     user: null,
@@ -34,7 +32,31 @@ export default new Vuex.Store({
     profileId: null,
     profileInitials: null,
   },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+    blogPostCards(state) {
+      return state.blogPosts.slice(2, 6);
+    },
+
+  },
   mutations: {
+    newBlogPost(state, payload) {
+      state.blogHTML = payload;
+    },
+    updateBlogTitle(state, payload) {
+      state.blogTitle = payload;
+    },
+    fileNameChange(state, payload) {
+      state.blogPhotoName = payload;
+    },
+    createFileUrl(state, payload) {
+      state.blogPhotoFileUrl = payload;
+    },
+    openPhotoPreview(state) {
+      state.blogPhotoPreview = !state.blogPhotoPreview;
+    },
     toggleEditPost(state, payload) {
       state.editPost = payload;
     },
@@ -78,7 +100,7 @@ export default new Vuex.Store({
       const admin = await token.claims.admin;
       commit('setProfileAdmin', admin);
     },
-    async updateUserSettings({commit, state}) {
+    async updateUserSettings({ commit, state }) {
       const dataBase = await db.collection('users').doc(state.profileId);
       await dataBase.update({
         firstName: state.profileFirstName,
@@ -87,6 +109,24 @@ export default new Vuex.Store({
       });
       commit("setProfileInitials");
     },
+    async getPost({state}) {
+      const dataBase = await db.collection('blogposts').orderBy('date', 'desc');
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some(post => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+          };
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+      console.log(state.blogPosts);
+    }
   },
   modules: {},
 });
