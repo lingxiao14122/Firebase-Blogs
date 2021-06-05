@@ -78,6 +78,7 @@ export default {
 			const fileName = this.file.name;
 			this.$store.commit("fileNameChange", fileName);
 			this.$store.commit("createFileUrl", URL.createObjectURL(this.file));
+			console.log('file change');
 		},
 		openPreview() {
 			this.$store.commit("openPhotoPreview");

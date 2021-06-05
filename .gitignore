@@ -3,6 +3,14 @@ node_modules
 /dist
 src/firebase
 
+.prettierrc
+.firebaserc
+.prettierrc
+firebase.json
+firestore.indexes.json
+firestore.rules
+storage.rules
+
 # local env files
 .env.local
 .env.*.local
