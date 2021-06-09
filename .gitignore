@@ -1,8 +1,13 @@
 .DS_Store
+
+# folder
 node_modules
 /dist
 src/firebase
+.firebase
 
+# individual file
+.firebase
 .prettierrc
 .firebaserc
 .prettierrc
@@ -10,6 +15,7 @@ firebase.json
 firestore.indexes.json
 firestore.rules
 storage.rules
+firebase-debug.log
 
 # local env files
 .env.local
