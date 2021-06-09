@@ -62,7 +62,7 @@ export default new Vuex.Store({
     },
     setBlogState(state, payload) {
       state.blogTitle = payload.blogTitle;
-      state.blogTiHTML = payload.blogHTML;
+      state.blogHTML = payload.blogHTML;
       state.blogPhotoFileUrl = payload.blogCoverPhoto;
       state.blogPhotoName = payload.blogCoverPhotoName;
     },

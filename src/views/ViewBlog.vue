@@ -44,5 +44,9 @@ export default {
 		height: 500px;
 		object-fit: cover;
 	}
+
+	.ql-editor {
+		word-wrap: break-word;
+	}
 }
 </style>
